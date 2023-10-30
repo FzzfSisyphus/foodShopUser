@@ -9,12 +9,12 @@ import (
 func AddNewAddr(c *gin.Context) {
 	// get data off req body
 	var httpBody struct {
-		UserId  int
-		Address string
+		UserName string
+		Address  string
 	}
 	c.Bind(&httpBody)
 	// create an address
-	addr := models.UserAd{UserId: httpBody.UserId, Address: httpBody.Address}
+	addr := models.UserAd{UserName: httpBody.UserName, Address: httpBody.Address}
 	result := initializers.DB.Create(&addr)
 	if result.Error != nil {
 		c.Status(400)
@@ -27,19 +27,19 @@ func AddNewAddr(c *gin.Context) {
 	})
 }
 
-func GetByIdAddress(c *gin.Context) {
+func GetByUserNameAddress(c *gin.Context) {
 	//get the post
-	id := c.Param("id")
+	id := c.Param("userName")
 	var addrReturn models.UserAd
-	res := initializers.DB.Where("user_id = ?", id).Find(&addrReturn)
+	res := initializers.DB.Where("user_name = ?", id).Find(&addrReturn)
 	if res.Error != nil {
 		c.Status(400)
 		return
 	}
 	//respond with them
 	c.JSON(200, gin.H{
-		"UserId":  addrReturn.UserId,
-		"Address": addrReturn.Address,
+		"UserName": addrReturn.UserName,
+		"Address":  addrReturn.Address,
 	})
 }
 
@@ -60,13 +60,13 @@ func AddressUpdate(c *gin.Context) {
 
 	//Get detail from req body
 	var httpBody struct {
-		UserId  int
-		Address string
+		UserName string
+		Address  string
 	}
 	c.Bind(&httpBody)
 	//Find the post were updating
 	var addrUpdate models.UserAd
-	initializers.DB.Where("user_id = ?", httpBody.UserId).Find(&addrUpdate)
+	initializers.DB.Where("user_name = ?", httpBody.UserName).Find(&addrUpdate)
 	//update it
 	initializers.DB.Model(&addrUpdate).Update("address", httpBody.Address)
 
@@ -74,7 +74,7 @@ func AddressUpdate(c *gin.Context) {
 
 	//get the post
 	var addrReturn models.UserAd
-	initializers.DB.Where("user_id = ?", httpBody.UserId).Find(&addrReturn)
+	initializers.DB.Where("user_name = ?", httpBody.UserName).Find(&addrReturn)
 	//respond with them
 	c.JSON(200, gin.H{
 		"address": addrReturn,
