@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: food-shop-user
+spec:
+  selector:
+    app: food-shop-user
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
