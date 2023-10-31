@@ -17,7 +17,7 @@ func main() {
 	r.POST("/address/add", controllers.AddNewAddr)
 	//r.GET("/get", controllers.AddressGetById)
 	r.GET("/product/address/:userName", controllers.GetByUserNameAddress)
-	r.POST("/product/buy ", controllers.AddressUpdate)
+	r.POST("/product/userbuy", controllers.AddressUpdate)
 	//r.GET("/product/address ", controllers.AddressGetById)
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
